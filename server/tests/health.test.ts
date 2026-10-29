@@ -20,3 +20,4 @@ describe('Health Check Endpoint (Phase S0)', () => {
     expect(res.headers['x-powered-by']).toBeUndefined();
   });
 });
+
