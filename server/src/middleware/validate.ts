@@ -47,3 +47,4 @@ export const handleValidationErrors = (
   const firstMsg = errors.array()[0]?.msg || 'Validation failed';
   return next(new AppError(400, 'VALIDATION_ERROR', firstMsg, details));
 };
+

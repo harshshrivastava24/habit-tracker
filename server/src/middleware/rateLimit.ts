@@ -32,3 +32,4 @@ export const authRateLimiter: RateLimitRequestHandler = createRateLimiter({
   limit: 10,
   message: 'Too many authentication attempts, please try again later',
 });
+

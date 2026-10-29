@@ -64,3 +64,4 @@ export const loadEnv = (): EnvConfig => {
 };
 
 export const env = loadEnv();
+

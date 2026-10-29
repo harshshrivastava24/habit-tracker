@@ -7,3 +7,4 @@ export const connectDB = async (uri: string): Promise<typeof mongoose> => {
 export const disconnectDB = async (): Promise<void> => {
   await mongoose.disconnect();
 };
+
