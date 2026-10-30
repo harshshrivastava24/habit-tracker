@@ -1,9 +1,19 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Load .env if loadEnvFile exists (Node 20.6+)
 if (typeof process.loadEnvFile === 'function') {
   try {
     process.loadEnvFile();
   } catch {
-    // If running without .env on disk or already loaded, proceed
+    try {
+      process.loadEnvFile(path.resolve(__dirname, '../../.env'));
+    } catch {
+      // If running without .env on disk or already loaded, proceed
+    }
   }
 }
 
@@ -64,4 +74,3 @@ export const loadEnv = (): EnvConfig => {
 };
 
 export const env = loadEnv();
-
