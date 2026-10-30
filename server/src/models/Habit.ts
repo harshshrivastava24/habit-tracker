@@ -81,3 +81,4 @@ const habitSchema = new Schema<IHabit>(
 habitSchema.index({ userId: 1, archivedAt: 1 });
 
 export const Habit = model<IHabit>('Habit', habitSchema);
+

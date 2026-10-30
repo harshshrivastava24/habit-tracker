@@ -50,3 +50,4 @@ completionSchema.index({ habitId: 1, date: 1 }, { unique: true });
 completionSchema.index({ userId: 1, date: 1 });
 
 export const Completion = model<ICompletion>('Completion', completionSchema);
+
