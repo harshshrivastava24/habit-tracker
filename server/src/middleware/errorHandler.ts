@@ -24,9 +24,13 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     return;
   }
 
-  // Unexpected errors: log on server (suppressed in test environment), never leak stack traces to client
+  // Unexpected errors: log full stack trace on server (suppressed in test environment), never leak stack traces to client
   if (process.env.NODE_ENV !== 'test') {
-    console.error('Unhandled internal error:', err);
+    if (err instanceof Error) {
+      console.error('Unhandled internal error:', err.stack || err.message);
+    } else {
+      console.error('Unhandled internal error:', err);
+    }
   }
 
   res.status(500).json({
