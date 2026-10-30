@@ -33,3 +33,28 @@ export const getTodayUTC = (): string => {
   const day = String(now.getUTCDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
+/**
+ * Returns the maximum allowed completion date (UTC today + 1 day) formatted as YYYY-MM-DD.
+ */
+export const getMaxAllowedCompletionDate = (): string => {
+  const now = new Date();
+  const tomorrow = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)
+  );
+  const year = tomorrow.getUTCFullYear();
+  const month = String(tomorrow.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(tomorrow.getUTCDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+/**
+ * Returns the difference in calendar days between two YYYY-MM-DD strings (to - from).
+ */
+export const getDaysDifference = (from: string, to: string): number => {
+  const [y1, m1, d1] = from.split('-').map(Number);
+  const [y2, m2, d2] = to.split('-').map(Number);
+  const utc1 = Date.UTC(y1, m1 - 1, d1);
+  const utc2 = Date.UTC(y2, m2 - 1, d2);
+  return Math.round((utc2 - utc1) / (1000 * 60 * 60 * 24));
+};
