@@ -136,3 +136,4 @@ echo "=== 20. Logout (POST /auth/logout) ==="
 curl -s -b "${COOKIE_JAR}" -c "${COOKIE_JAR}" -X POST "${BASE_URL}/auth/logout" | jq .
 rm -f "${COOKIE_JAR}"
 echo -e "\nDone!"
+
