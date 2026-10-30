@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as habitController from '../controllers/habitController.js';
+import completionRouter from './completions.js';
 import {
   validateCreateHabit,
   validateUpdateHabit,
@@ -13,6 +14,9 @@ const router = Router();
 // PRD Section 7: All habit endpoints require requireAuth
 router.use(requireAuth);
 
+// Nested completions router (PRD Section 7.3)
+router.use('/:id/completions', completionRouter);
+
 router.get('/', validateListHabits, asyncHandler(habitController.getHabits));
 router.post('/', validateCreateHabit, asyncHandler(habitController.createHabit));
 router.get('/:id', asyncHandler(habitController.getHabitById));
@@ -22,4 +26,3 @@ router.post('/:id/archive', asyncHandler(habitController.archiveHabit));
 router.post('/:id/unarchive', asyncHandler(habitController.unarchiveHabit));
 
 export default router;
-
