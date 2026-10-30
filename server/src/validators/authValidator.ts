@@ -40,3 +40,4 @@ export const validateLogin = validate([
     .notEmpty()
     .withMessage('Password is required'),
 ]);
+

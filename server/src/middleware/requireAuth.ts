@@ -54,3 +54,4 @@ export const requireAuth = (req: Request, _res: Response, next: NextFunction): v
     return next(new AppError(401, 'UNAUTHENTICATED', 'Invalid access token'));
   }
 };
+

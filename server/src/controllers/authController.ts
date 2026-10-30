@@ -53,3 +53,4 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
   const user = await authService.getMe(userId);
   res.status(200).json({ user });
 };
+
