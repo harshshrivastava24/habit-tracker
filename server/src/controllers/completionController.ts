@@ -43,3 +43,4 @@ export const deleteCompletion = async (
 
   res.status(204).send();
 };
+
