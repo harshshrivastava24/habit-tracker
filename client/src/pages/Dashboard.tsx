@@ -9,6 +9,7 @@ import { Spinner } from '../components/Spinner';
 import { EmptyState } from '../components/EmptyState';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { getLocalDateString } from '../utils/date';
+import { getDailyQuote } from '../data/quotes';
 import { Link } from 'react-router-dom';
 import type { AxiosError } from 'axios';
 
@@ -116,11 +117,16 @@ export const Dashboard: React.FC = () => {
     fetchActiveHabitsAndCompletions();
   };
 
+  const dailyQuote = useMemo(() => getDailyQuote(), []);
+
   return (
     <div className="space-y-10">
       {/* Header */}
       <div className="border-b border-border pb-4">
         <h1 className="text-2xl font-semibold text-text-primary">Dashboard</h1>
+        <p className="text-sm text-text-muted mt-1">
+          &ldquo;{dailyQuote.text}&rdquo;{dailyQuote.author ? ` — ${dailyQuote.author}` : ''}
+        </p>
       </div>
 
       {/* Stats Row with vertical dividers, no card/box */}

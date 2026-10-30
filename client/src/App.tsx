@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { AppLayout } from './components/AppLayout';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { Dashboard } from './pages/Dashboard';
@@ -14,7 +15,8 @@ export const App: React.FC = () => {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public auth routes with separate layout (no sidebar) */}
+          {/* Public routes without sidebar */}
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
@@ -29,11 +31,10 @@ export const App: React.FC = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/habits" element={<Habits />} />
             <Route path="/habits/:id" element={<HabitDetail />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
           </Route>
 
-          {/* Catch-all redirect */}
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          {/* Catch-all redirect to / */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
