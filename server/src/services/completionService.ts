@@ -178,3 +178,4 @@ export const deleteCompletion = async (
     date,
   });
 };
+
