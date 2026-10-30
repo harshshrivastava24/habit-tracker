@@ -8,3 +8,4 @@ export const getStats = async (req: Request, res: Response): Promise<void> => {
   const stats = await statsService.getDashboardStats(req.userId!, from, to);
   res.status(200).json(stats);
 };
+
