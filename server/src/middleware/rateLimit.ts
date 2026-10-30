@@ -1,9 +1,11 @@
 import rateLimit, { RateLimitRequestHandler } from 'express-rate-limit';
+import { Request } from 'express';
 
 export interface RateLimiterOptions {
   windowMs?: number;
   limit?: number;
   message?: string;
+  skip?: (req: Request) => boolean;
 }
 
 export const createRateLimiter = (options?: RateLimiterOptions): RateLimitRequestHandler => {
@@ -16,6 +18,7 @@ export const createRateLimiter = (options?: RateLimiterOptions): RateLimitReques
     limit,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
+    skip: options?.skip,
     handler: (_req, res) => {
       res.status(429).json({
         error: {
@@ -31,5 +34,5 @@ export const authRateLimiter: RateLimitRequestHandler = createRateLimiter({
   windowMs: 15 * 60 * 1000,
   limit: 10,
   message: 'Too many authentication attempts, please try again later',
+  skip: () => process.env.NODE_ENV === 'test',
 });
-
