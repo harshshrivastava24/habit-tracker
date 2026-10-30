@@ -89,3 +89,4 @@ export const validateListHabits = validate([
     .isIn(['active', 'archived'])
     .withMessage("Status must be either 'active' or 'archived'"),
 ]);
+

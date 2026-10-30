@@ -22,3 +22,4 @@ router.post('/:id/archive', asyncHandler(habitController.archiveHabit));
 router.post('/:id/unarchive', asyncHandler(habitController.unarchiveHabit));
 
 export default router;
+

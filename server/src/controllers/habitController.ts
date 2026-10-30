@@ -36,3 +36,4 @@ export const unarchiveHabit = async (req: Request, res: Response): Promise<void>
   const habit = await habitService.unarchiveHabit(req.userId!, req.params.id);
   res.status(200).json({ habit });
 };
+

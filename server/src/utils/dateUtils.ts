@@ -33,3 +33,4 @@ export const getTodayUTC = (): string => {
   const day = String(now.getUTCDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 };
+
