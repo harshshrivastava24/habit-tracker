@@ -212,3 +212,4 @@ export const getMe = async (userId: string): Promise<FormattedUser> => {
   }
   return formatUser(user);
 };
+
