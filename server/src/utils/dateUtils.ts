@@ -35,17 +35,22 @@ export const getTodayUTC = (): string => {
 };
 
 /**
+ * Adds (or subtracts) days to a YYYY-MM-DD date string in UTC and returns YYYY-MM-DD.
+ */
+export const addDaysToDate = (dateStr: string, days: number): string => {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d + days));
+  const year = dt.getUTCFullYear();
+  const month = String(dt.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(dt.getUTCDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+/**
  * Returns the maximum allowed completion date (UTC today + 1 day) formatted as YYYY-MM-DD.
  */
 export const getMaxAllowedCompletionDate = (): string => {
-  const now = new Date();
-  const tomorrow = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1)
-  );
-  const year = tomorrow.getUTCFullYear();
-  const month = String(tomorrow.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(tomorrow.getUTCDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return addDaysToDate(getTodayUTC(), 1);
 };
 
 /**
@@ -57,4 +62,17 @@ export const getDaysDifference = (from: string, to: string): number => {
   const utc1 = Date.UTC(y1, m1 - 1, d1);
   const utc2 = Date.UTC(y2, m2 - 1, d2);
   return Math.round((utc2 - utc1) / (1000 * 60 * 60 * 24));
+};
+
+/**
+ * Returns the ISO week range (Monday to Sunday) containing the given date string.
+ */
+export const getISOWeekRange = (dateStr: string): { from: string; to: string } => {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  const dayOfWeek = dt.getUTCDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+  const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  const monday = addDaysToDate(dateStr, diffToMonday);
+  const sunday = addDaysToDate(monday, 6);
+  return { from: monday, to: sunday };
 };

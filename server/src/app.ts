@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.js';
 import habitRouter from './routes/habits.js';
+import dashboardRouter from './routes/dashboard.js';
 import { notFound } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
@@ -29,6 +30,10 @@ app.use('/auth', authRouter);
 // Habits routes (PRD section 7.2 & 11)
 app.use('/api/habits', habitRouter);
 app.use('/habits', habitRouter);
+
+// Dashboard routes (PRD section 7.4 & 11)
+app.use('/api/dashboard', dashboardRouter);
+app.use('/dashboard', dashboardRouter);
 
 // 404 handler for unknown routes
 app.use(notFound);
