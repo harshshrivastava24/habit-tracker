@@ -1,5 +1,7 @@
 # Habit Tracker – Full-Stack Take-Home
 
+**Live demo:** https://habit-tracker-jv8k.onrender.com/
+
 A robust, production-ready Habit Tracker web application built with Express, TypeScript, and MongoDB (Server) and React, Vite, and Tailwind CSS (Client).
 
 ---
