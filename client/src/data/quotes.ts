@@ -84,3 +84,4 @@ export const getDailyQuote = (): Quote => {
   const index = Math.abs(diffDays) % quotes.length;
   return quotes[index];
 };
+
