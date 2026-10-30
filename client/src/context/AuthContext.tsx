@@ -1,17 +1,14 @@
-import React, { createContext, useContext, useState } from 'react';
-
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authApi } from '../api/auth';
+import type { User, LoginData, SignupData } from '../api/auth';
+import { setMemoryToken, setAuthCallbacks } from '../api/client';
 
 export interface AuthContextType {
   user: User | null;
   token: string | null;
   loading: boolean;
-  setAuth: (user: User | null, token: string | null) => void;
+  login: (data: LoginData) => Promise<User>;
+  signup: (data: SignupData) => Promise<User>;
   logout: () => Promise<void>;
 }
 
@@ -20,20 +17,69 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [loading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const setAuth = (newUser: User | null, newToken: string | null) => {
-    setUser(newUser);
-    setToken(newToken);
+  useEffect(() => {
+    // Wire up single-flight refresh callbacks from api interceptor
+    setAuthCallbacks(
+      (refreshedUser, refreshedToken) => {
+        setUser(refreshedUser);
+        setToken(refreshedToken);
+      },
+      () => {
+        setUser(null);
+        setToken(null);
+      }
+    );
+
+    // Silent refresh on app load
+    authApi
+      .refresh()
+      .then((res) => {
+        setUser(res.user);
+        setToken(res.accessToken);
+        setMemoryToken(res.accessToken);
+      })
+      .catch(() => {
+        setUser(null);
+        setToken(null);
+        setMemoryToken(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  const login = async (data: LoginData): Promise<User> => {
+    const res = await authApi.login(data);
+    setUser(res.user);
+    setToken(res.accessToken);
+    setMemoryToken(res.accessToken);
+    return res.user;
   };
 
-  const logout = async () => {
-    setUser(null);
-    setToken(null);
+  const signup = async (data: SignupData): Promise<User> => {
+    const res = await authApi.signup(data);
+    setUser(res.user);
+    setToken(res.accessToken);
+    setMemoryToken(res.accessToken);
+    return res.user;
+  };
+
+  const logout = async (): Promise<void> => {
+    try {
+      await authApi.logout();
+    } catch {
+      // Ignore network errors on logout, state must be cleared regardless
+    } finally {
+      setUser(null);
+      setToken(null);
+      setMemoryToken(null);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, setAuth, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, signup, logout }}>
       {children}
     </AuthContext.Provider>
   );
